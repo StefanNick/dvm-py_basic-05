@@ -3,9 +3,8 @@ from faker import Faker
 from random import randint, choice, sample
 
 
-print(file_operations.VERSION)
-
 fake = Faker("ru_RU")
+
 
 characteristic_list = [
     "Стремительный прыжок",
@@ -17,6 +16,7 @@ characteristic_list = [
     "Ледяной выстрел",
     "Огненный заряд",
 ]
+
 
 letters_mapping = {
     "а": "а͠",
@@ -88,61 +88,34 @@ letters_mapping = {
     " ": " ",
 }
 
-# skills = sample(characteristic_list, 3)
 
-# runic_skills = []
-
-# for skill in skills:
-
-#     for letter in skill:
-
-#         skill = skill.replace(letter, letters_mapping[letter])
-
-#     runic_skills.append(skill)
-
-# context = {
-#     "first_name": fake.first_name(),
-#     "last_name": fake.last_name(),
-#     "job": fake.job(),
-#     "town": fake.city(),
-#     "strength": randint(3, 18),
-#     "agility": randint(3, 18),
-#     "endurance": randint(3, 18),
-#     "intelligence": randint(3, 18),
-#     "luck": randint(3, 18),
-#     "skill_1": runic_skills[0],
-#     "skill_2": runic_skills[1],
-#     "skill_3": runic_skills[2],
-# }
-
-
-#file_operations.render_template("charsheet.svg", "charsheet_test.svg", context)
-
-os.makedirs("output", mode=0o777, exist_ok=True)
+def main():
+    os.makedirs("output", mode=0o777, exist_ok=True)
+    for i in range(10):
+        skills = sample(characteristic_list, 3)
+        runic_skills = []
+        for skill in skills:
+            for letter in skill:
+                skill = skill.replace(letter, letters_mapping[letter])
+            runic_skills.append(skill)
+        context = {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "job": fake.job(),
+            "town": fake.city(),
+            "strength": randint(3, 18),
+            "agility": randint(3, 18),
+            "endurance": randint(3, 18),
+            "intelligence": randint(3, 18),
+            "luck": randint(3, 18),
+            "skill_1": runic_skills[0],
+            "skill_2": runic_skills[1],
+            "skill_3": runic_skills[2],
+        }
+        file_operations.render_template(
+            "charsheet.svg", "output\\charsheet_#{}.svg".format(i), context
+        )
 
 
-for i in range(10):
-    skills = sample(characteristic_list, 3)
-    runic_skills = []
-    for skill in skills:
-        for letter in skill:
-            skill = skill.replace(letter, letters_mapping[letter])
-        runic_skills.append(skill)
-
-    context = {
-        "first_name": fake.first_name(),
-        "last_name": fake.last_name(),
-        "job": fake.job(),
-        "town": fake.city(),
-        "strength": randint(3, 18),
-        "agility": randint(3, 18),
-        "endurance": randint(3, 18),
-        "intelligence": randint(3, 18),
-        "luck": randint(3, 18),
-        "skill_1": runic_skills[0],
-        "skill_2": runic_skills[1],
-        "skill_3": runic_skills[2],
-    }
-    file_operations.render_template(
-        "charsheet.svg", "output\charsheet_#{}.svg".format(i), context
-    )
+if __name__ == "__main__":
+    main()
