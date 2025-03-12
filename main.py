@@ -1,12 +1,12 @@
 import file_operations, os
 from faker import Faker
-from random import randint, choice, sample
+from random import randint, sample
 
 
 fake = Faker("ru_RU")
 
 
-characteristic_list = [
+CHARACTERISTIC_LIST = [
     "Стремительный прыжок",
     "Электрический выстрел",
     "Ледяной удар",
@@ -18,7 +18,7 @@ characteristic_list = [
 ]
 
 
-letters_mapping = {
+LETTERS_MAPPING = {
     "а": "а͠",
     "б": "б̋",
     "в": "в͒͠",
@@ -89,14 +89,13 @@ letters_mapping = {
 }
 
 
-def main():
-    os.makedirs("output", mode=0o777, exist_ok=True)
-    for i in range(10):
-        skills = sample(characteristic_list, 3)
+def make_cards(number_of_cards, input_path_sample, output_path_sample):
+    for i in range(number_of_cards):
+        skills = sample(CHARACTERISTIC_LIST, 3)
         runic_skills = []
         for skill in skills:
             for letter in skill:
-                skill = skill.replace(letter, letters_mapping[letter])
+                skill = skill.replace(letter, LETTERS_MAPPING[letter])
             runic_skills.append(skill)
         context = {
             "first_name": fake.first_name(),
@@ -113,8 +112,15 @@ def main():
             "skill_3": runic_skills[2],
         }
         file_operations.render_template(
-            "charsheet.svg", "output\\charsheet_#{}.svg".format(i), context
+            input_path_sample, output_path_sample.format(i), context
         )
+
+
+def main():
+    os.makedirs("output", mode=0o777, exist_ok=True)
+    input_path_sample = "charsheet.svg"
+    output_path_sample = "output/charsheet_#{}.svg"
+    make_cards(10, input_path_sample, output_path_sample)
 
 
 if __name__ == "__main__":
