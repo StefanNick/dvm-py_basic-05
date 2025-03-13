@@ -3,7 +3,7 @@ from faker import Faker
 from random import randint, sample
 
 
-fake = Faker("ru_RU")
+FAKE = Faker("ru_RU")
 
 
 CHARACTERISTIC_LIST = [
@@ -98,10 +98,10 @@ def make_cards(number_of_cards, input_path_sample, output_path_sample):
                 skill = skill.replace(letter, LETTERS_MAPPING[letter])
             runic_skills.append(skill)
         context = {
-            "first_name": fake.first_name(),
-            "last_name": fake.last_name(),
-            "job": fake.job(),
-            "town": fake.city(),
+            "first_name": FAKE.first_name(),
+            "last_name": FAKE.last_name(),
+            "job": FAKE.job(),
+            "town": FAKE.city(),
             "strength": randint(3, 18),
             "agility": randint(3, 18),
             "endurance": randint(3, 18),
